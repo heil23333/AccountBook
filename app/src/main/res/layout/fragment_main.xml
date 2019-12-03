@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewmodel"
+            type="com.heil.accountbook.viewmodel.MainViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -39,6 +41,7 @@
             android:src="@drawable/ic_add_black_24dp"
             app:layout_anchor="@id/recyclerView"
             app:layout_anchorGravity="bottom|center_horizontal"
-            android:layout_marginBottom="30dp"/>
+            android:layout_marginBottom="30dp"
+            android:onClick="@{viewmodel::insertAccountItem}"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

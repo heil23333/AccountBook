@@ -16,7 +16,7 @@ public interface AccountDAO {
     @Query("SELECT * FROM account_item")
     List<AccountItem> getAllAccountItem();
     @Insert
-    void insertAccount(AccountItem... accountItems);
+    void insertAccountItem(AccountItem... accountItems);
     @Delete
     void deletAccount(AccountItem... accountItems);
 
@@ -29,4 +29,6 @@ public interface AccountDAO {
 
     @Query("SELECT * FROM account_tag WHERE class_id = :classId")
     List<AccountTag> getTagByClassId(int classId);
+    @Insert
+    void insertAccountTag(AccountTag... accountTags);
 }

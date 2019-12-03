@@ -1,6 +1,5 @@
 package com.heil.accountbook.bean;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -20,9 +19,64 @@ public class AccountItem {
     @ColumnInfo(name = "account_money")
     public float accountMoney;
 
-    @ColumnInfo(name = "account_class")
+    @ColumnInfo(name = "account_class", index = true)
     public int accountClass;
 
-    @ColumnInfo(name = "account_tag")
+    @ColumnInfo(name = "account_tag", index = true)
     public int accountTag;
+
+    @ColumnInfo(name = "account_describe")
+    public String accountDescribe;
+
+    public AccountItem(long accountTime, float accountMoney, int accountClass, int accountTag, String accountDescribe) {
+        this.accountTime = accountTime;
+        this.accountMoney = accountMoney;
+        this.accountClass = accountClass;
+        this.accountTag = accountTag;
+        this.accountDescribe = accountDescribe;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public long getAccountTime() {
+        return accountTime;
+    }
+
+    public void setAccountTime(long accountTime) {
+        this.accountTime = accountTime;
+    }
+
+    public float getAccountMoney() {
+        return accountMoney;
+    }
+
+    public void setAccountMoney(float accountMoney) {
+        this.accountMoney = accountMoney;
+    }
+
+    public int getAccountClass() {
+        return accountClass;
+    }
+
+    public void setAccountClass(int accountClass) {
+        this.accountClass = accountClass;
+    }
+
+    public int getAccountTag() {
+        return accountTag;
+    }
+
+    public void setAccountTag(int accountTag) {
+        this.accountTag = accountTag;
+    }
+
+    public String getAccountDescribe() {
+        return accountDescribe;
+    }
+
+    public void setAccountDescribe(String accountDescribe) {
+        this.accountDescribe = accountDescribe;
+    }
 }

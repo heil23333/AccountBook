@@ -25,4 +25,24 @@ public class AccountTag {
 
     @ColumnInfo(name = "tag_describe")
     public String tagDescribe;
+
+    public int getTagId() {
+        return tagId;
+    }
+
+    public int getClassId() {
+        return classId;
+    }
+
+    public void setClassId(int classId) {
+        this.classId = classId;
+    }
+
+    public String getTagDescribe() {
+        return tagDescribe;
+    }
+
+    public void setTagDescribe(String tagDescribe) {
+        this.tagDescribe = tagDescribe;
+    }
 }

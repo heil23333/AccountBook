@@ -12,4 +12,17 @@ public class AccountClass {
 
     @ColumnInfo(name = "class_describe")
     public String classDescribe;
+
+    public int getClassId() {
+        return classId;
+    }
+
+    public String getClassDescribe() {
+        return classDescribe;
+    }
+
+    public void setClassDescribe(String classDescribe) {
+        this.classDescribe = classDescribe;
+    }
+
 }
