@@ -20,11 +20,16 @@ public class AccountTag {
     @ColumnInfo(name = "id")
     public int tagId;
 
-    @ColumnInfo(name = "class_id")
+    @ColumnInfo(name = "class_id", index = true)
     public int classId;
 
     @ColumnInfo(name = "tag_describe")
     public String tagDescribe;
+
+    public AccountTag(int classId, String tagDescribe) {
+        this.classId = classId;
+        this.tagDescribe = tagDescribe;
+    }
 
     public int getTagId() {
         return tagId;

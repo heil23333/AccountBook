@@ -13,6 +13,10 @@ public class AccountClass {
     @ColumnInfo(name = "class_describe")
     public String classDescribe;
 
+    public AccountClass(String classDescribe) {
+        this.classDescribe = classDescribe;
+    }
+
     public int getClassId() {
         return classId;
     }

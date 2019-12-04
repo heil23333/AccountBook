@@ -10,9 +10,9 @@ import com.heil.accountbook.bean.AccountClass;
 import com.heil.accountbook.bean.AccountItem;
 import com.heil.accountbook.bean.AccountTag;
 
-@Database(entities = {AccountItem.class, AccountClass.class, AccountTag.class}, version = 1)
+@Database(entities = {AccountItem.class, AccountClass.class, AccountTag.class}, version = 1, exportSchema = false)
 public abstract class AccountDatabase extends RoomDatabase {
-    public static volatile AccountDatabase INSTANCE;
+    private static volatile AccountDatabase INSTANCE;
     public abstract AccountDAO getAccountDAO();
 
     public synchronized static AccountDatabase getDatabase(final Context context) {
