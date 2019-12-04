@@ -39,22 +39,21 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false);
+        binding.setLifecycleOwner(this);
+        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        binding.setViewmodel(viewModel);
+        return binding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        binding = DataBindingUtil.setContentView(getActivity(), R.layout.fragment_main);
-        binding.setViewmodel(viewModel);
 
-        actionButton = getActivity().findViewById(R.id.add);
-        actionButton.setOnClickListener(new View.OnClickListener() {
+        binding.add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavController navController = Navigation.findNavController(getView());
-                navController.navigate(R.id.action_mainFragment_to_addAccountFragment);
+                Navigation.findNavController(view).navigate(R.id.action_mainFragment_to_addAccountFragment);
             }
         });
     }
