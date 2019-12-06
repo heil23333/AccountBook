@@ -6,15 +6,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.heil.accountbook.R;
 import com.heil.accountbook.bean.AccountItemResult;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.heil.accountbook.databinding.LayoutAccountItemBinding;
 
 public class MyAccountItemAdapter extends PagedListAdapter<AccountItemResult, MyAccountItemAdapter.AccountItemViewHolder> {
 
@@ -35,29 +35,21 @@ public class MyAccountItemAdapter extends PagedListAdapter<AccountItemResult, My
     @NonNull
     @Override
     public AccountItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.layout_account_item, parent, false);
-        return new AccountItemViewHolder(view);
+        LayoutAccountItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.layout_account_item, parent, false);
+        return new AccountItemViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AccountItemViewHolder holder, int position) {
-        holder.accountItemClass.setText(getItem(position).getClass_describe());
-        holder.accountItemTag.setText(getItem(position).getTag_describe());
-        Date time = new Date(getItem(position).getAccount_time());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd HH:mm");
-        holder.accountItemTime.setText(simpleDateFormat.format(time));
-        holder.accountItemMoney.setText(getItem(position).getAccount_money() + "元");
+        LayoutAccountItemBinding binding = (LayoutAccountItemBinding) holder.dataBinding;
+        binding.setResult(getItem(position));
     }
 
     static class AccountItemViewHolder extends RecyclerView.ViewHolder{
-        TextView accountItemClass, accountItemTag, accountItemMoney, accountItemTime;
-        public AccountItemViewHolder(@NonNull View itemView) {
-            super(itemView);
-            accountItemClass = itemView.findViewById(R.id.accountItemClass);
-            accountItemTag = itemView.findViewById(R.id.accountItemTag);
-            accountItemMoney = itemView.findViewById(R.id.accountItemMoney);
-            accountItemTime = itemView.findViewById(R.id.accountItemTime);
+        ViewDataBinding dataBinding;
+        public AccountItemViewHolder(ViewDataBinding dataBinding) {
+            super(dataBinding.getRoot());
+            this.dataBinding = dataBinding;
         }
     }
 }
