@@ -7,6 +7,7 @@ import androidx.paging.DataSource;
 
 import com.heil.accountbook.bean.AccountClass;
 import com.heil.accountbook.bean.AccountItem;
+import com.heil.accountbook.bean.AccountItemResult;
 import com.heil.accountbook.bean.AccountTag;
 import com.heil.accountbook.callback.GetAccountItemCallback;
 import com.heil.accountbook.database.AccountDAO;
@@ -47,7 +48,7 @@ public class Repository {
     public static class GetAccountItemAsyncTask extends AsyncTask<Void, Void, Void> {
         AccountDAO dao;
         GetAccountItemCallback callback;
-        DataSource.Factory<Integer, AccountItem> factory;
+        DataSource.Factory<Integer, AccountItemResult> factory;
 
         public GetAccountItemAsyncTask(AccountDAO dao, GetAccountItemCallback callback) {
             this.dao = dao;
@@ -56,7 +57,7 @@ public class Repository {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            factory = dao.getAllAccountItem();
+            factory = dao.getRelAccountItem();
             return null;
         }
 

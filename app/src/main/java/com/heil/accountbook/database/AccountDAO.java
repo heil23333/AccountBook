@@ -8,6 +8,7 @@ import androidx.room.Query;
 
 import com.heil.accountbook.bean.AccountClass;
 import com.heil.accountbook.bean.AccountItem;
+import com.heil.accountbook.bean.AccountItemResult;
 import com.heil.accountbook.bean.AccountTag;
 
 import java.util.List;
@@ -20,6 +21,9 @@ public interface AccountDAO {
     void insertAccountItem(AccountItem... accountItems);
     @Delete
     void deletAccount(AccountItem... accountItems);
+
+    @Query("SELECT item.id, account_money, account_time, account_describe, class_describe, tag_describe FROM account_item item JOIN account_class class JOIN account_tag tag WHERE item.account_class = class.id AND item.account_tag = tag.id")
+    DataSource.Factory<Integer, AccountItemResult> getRelAccountItem();
 
     @Insert
     void insertAccountClass(AccountClass... accountClasses);

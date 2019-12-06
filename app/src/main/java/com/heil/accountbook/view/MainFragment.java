@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.heil.accountbook.bean.AccountItemResult;
 import com.heil.accountbook.callback.GetAccountItemCallback;
 import com.heil.accountbook.R;
 import com.heil.accountbook.adapter.MyAccountItemAdapter;
@@ -37,7 +38,7 @@ public class MainFragment extends Fragment implements GetAccountItemCallback {
     private MainViewModel viewModel;
     private FragmentMainBinding binding;
     private MyAccountItemAdapter accountItemAdapter;
-    private LiveData<PagedList<AccountItem>> accountList;
+    private LiveData<PagedList<AccountItemResult>> accountList;
 
     public MainFragment() {
         // Required empty public constructor
@@ -73,11 +74,11 @@ public class MainFragment extends Fragment implements GetAccountItemCallback {
     }
 
     @Override
-    public void gotItems(DataSource.Factory<Integer, AccountItem> data) {
+    public void gotItems(DataSource.Factory<Integer, AccountItemResult> data) {
         accountList = new LivePagedListBuilder<>(data, 10).build();
-        accountList.observe(this, new Observer<PagedList<AccountItem>>() {
+        accountList.observe(this, new Observer<PagedList<AccountItemResult>>() {
             @Override
-            public void onChanged(PagedList<AccountItem> accountItems) {
+            public void onChanged(PagedList<AccountItemResult> accountItems) {
                 accountItemAdapter.submitList(accountItems);
             }
         });

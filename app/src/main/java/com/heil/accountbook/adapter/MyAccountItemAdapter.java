@@ -11,22 +11,23 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.heil.accountbook.R;
-import com.heil.accountbook.bean.AccountItem;
+import com.heil.accountbook.bean.AccountItemResult;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MyAccountItemAdapter extends PagedListAdapter<AccountItem, MyAccountItemAdapter.AccountItemViewHolder> {
+public class MyAccountItemAdapter extends PagedListAdapter<AccountItemResult, MyAccountItemAdapter.AccountItemViewHolder> {
 
     public MyAccountItemAdapter() {
-        super(new DiffUtil.ItemCallback<AccountItem>() {
+        super(new DiffUtil.ItemCallback<AccountItemResult>() {
             @Override
-            public boolean areItemsTheSame(@NonNull AccountItem oldItem, @NonNull AccountItem newItem) {
+            public boolean areItemsTheSame(@NonNull AccountItemResult oldItem, @NonNull AccountItemResult newItem) {
                 return oldItem.getId() == newItem.getId();
             }
 
             @Override
-            public boolean areContentsTheSame(@NonNull AccountItem oldItem, @NonNull AccountItem newItem) {
-                return oldItem.getAccountTime() == newItem.getAccountTime();
+            public boolean areContentsTheSame(@NonNull AccountItemResult oldItem, @NonNull AccountItemResult newItem) {
+                return oldItem.getAccount_time() == newItem.getAccount_time();
             }
         });
     }
@@ -41,11 +42,12 @@ public class MyAccountItemAdapter extends PagedListAdapter<AccountItem, MyAccoun
 
     @Override
     public void onBindViewHolder(@NonNull AccountItemViewHolder holder, int position) {
-        holder.accountItemClass.setText(String.valueOf(getItem(position).getAccountClass()));
-        holder.accountItemTag.setText(String.valueOf(getItem(position).getAccountTag()));
-        String time = new Date(getItem(position).getAccountTime()).toString();
-        holder.accountItemTime.setText(time);
-        holder.accountItemMoney.setText(String.valueOf(getItem(position).getAccountMoney()));
+        holder.accountItemClass.setText(getItem(position).getClass_describe());
+        holder.accountItemTag.setText(getItem(position).getTag_describe());
+        Date time = new Date(getItem(position).getAccount_time());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd HH:mm");
+        holder.accountItemTime.setText(simpleDateFormat.format(time));
+        holder.accountItemMoney.setText(getItem(position).getAccount_money() + "元");
     }
 
     static class AccountItemViewHolder extends RecyclerView.ViewHolder{
