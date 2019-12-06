@@ -3,9 +3,12 @@ package com.heil.accountbook;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import androidx.paging.DataSource;
+
 import com.heil.accountbook.bean.AccountClass;
 import com.heil.accountbook.bean.AccountItem;
 import com.heil.accountbook.bean.AccountTag;
+import com.heil.accountbook.callback.GetAccountItemCallback;
 import com.heil.accountbook.database.AccountDAO;
 import com.heil.accountbook.database.AccountDatabase;
 
@@ -35,6 +38,33 @@ public class Repository {
 
     public void insertAccountItem(AccountItem... accountItems) {
         new InsertAccountItem(dao).execute(accountItems);
+    }
+
+    public void getAccountItemData(GetAccountItemCallback callback) {
+        new GetAccountItemAsyncTask(dao, callback).execute();
+    }
+
+    public static class GetAccountItemAsyncTask extends AsyncTask<Void, Void, Void> {
+        AccountDAO dao;
+        GetAccountItemCallback callback;
+        DataSource.Factory<Integer, AccountItem> factory;
+
+        public GetAccountItemAsyncTask(AccountDAO dao, GetAccountItemCallback callback) {
+            this.dao = dao;
+            this.callback = callback;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            factory = dao.getAllAccountItem();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            callback.gotItems(factory);
+            super.onPostExecute(aVoid);
+        }
     }
 
     public static class InsertAccountItem extends AsyncTask<AccountItem, Void, Void> {

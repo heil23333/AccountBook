@@ -1,5 +1,6 @@
 package com.heil.accountbook.database;
 
+import androidx.paging.DataSource;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -14,7 +15,7 @@ import java.util.List;
 @Dao
 public interface AccountDAO {
     @Query("SELECT * FROM account_item")
-    List<AccountItem> getAllAccountItem();
+    DataSource.Factory<Integer, AccountItem> getAllAccountItem();
     @Insert
     void insertAccountItem(AccountItem... accountItems);
     @Delete
