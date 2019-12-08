@@ -50,4 +50,13 @@ public class AccountTag {
     public void setTagDescribe(String tagDescribe) {
         this.tagDescribe = tagDescribe;
     }
+
+    @Override
+    public String toString() {
+        return "AccountTag{" +
+                "tagId=" + tagId +
+                ", classId=" + classId +
+                ", tagDescribe='" + tagDescribe + '\'' +
+                '}';
+    }
 }

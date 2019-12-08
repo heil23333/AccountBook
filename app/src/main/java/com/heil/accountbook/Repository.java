@@ -14,6 +14,7 @@ import com.heil.accountbook.callback.GetAccountItemCallback;
 import com.heil.accountbook.database.AccountDAO;
 import com.heil.accountbook.database.AccountDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Repository {
@@ -30,6 +31,10 @@ public class Repository {
             INSTANCE = new Repository(context);
         }
         return INSTANCE;
+    }
+
+    public void getAccountTag(MutableLiveData<List<AccountTag>> tagLiveData, int classId) {
+        new GetAccountTagAsyncTask(dao, tagLiveData).execute(classId);
     }
 
     public void getAccountClass(MutableLiveData<List<AccountClass>> classLiveData) {
@@ -50,6 +55,29 @@ public class Repository {
 
     public void getAccountItemData(GetAccountItemCallback callback) {
         new GetAccountItemAsyncTask(dao, callback).execute();
+    }
+
+    public static class GetAccountTagAsyncTask extends AsyncTask<Integer, Void, List<AccountTag>> {
+        AccountDAO dao;
+        MutableLiveData<List<AccountTag>> tagLiveData;
+
+        public GetAccountTagAsyncTask(AccountDAO dao, MutableLiveData<List<AccountTag>> tagLiveData) {
+            this.dao = dao;
+            this.tagLiveData = tagLiveData;
+        }
+
+        @Override
+        protected List<AccountTag> doInBackground(Integer... id) {
+            if (id.length == 0) {
+                return new ArrayList<>();
+            }
+            return dao.getTagByClassId(id[0]);
+        }
+
+        @Override
+        protected void onPostExecute(List<AccountTag> tagList) {
+            tagLiveData.setValue(tagList);
+        }
     }
 
     public static class GetAccountClassAsyncTask extends AsyncTask<Void, Void, List<AccountClass>> {

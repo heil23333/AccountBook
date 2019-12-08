@@ -27,20 +27,18 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.heil.accountbook.R;
 import com.heil.accountbook.bean.AccountClass;
 import com.heil.accountbook.bean.AccountItem;
+import com.heil.accountbook.bean.AccountTag;
 import com.heil.accountbook.databinding.FragmentAddAccountBinding;
-import com.heil.accountbook.utils.TimeUtils;
 import com.heil.accountbook.viewmodel.MainViewModel;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
-import com.zhy.view.flowlayout.TagFlowLayout;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,6 +47,9 @@ public class AddAccountFragment extends Fragment {
     private FragmentAddAccountBinding binding;
     private MainViewModel viewModel;
     private MutableLiveData<List<AccountClass>> classLiveData;
+    private MutableLiveData<List<AccountTag>> tagLiveData;
+    private int classPosition = 0, tagPosition = 0;
+    private String tagDescribe = "";
 
     public AddAccountFragment() {
         // Required empty public constructor
@@ -74,6 +75,7 @@ public class AddAccountFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ((AppCompatActivity)getActivity()).setSupportActionBar(binding.toolbar);//不加这一行不会显示Menu哦
         classLiveData = new MutableLiveData<>();
+        tagLiveData = new MutableLiveData<>();
         viewModel.loadClassData(classLiveData);
         final LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         classLiveData.observe(this, new Observer<List<AccountClass>>() {
@@ -92,7 +94,9 @@ public class AddAccountFragment extends Fragment {
                     @Override
                     public void onSelected(int position, View view) {// TODO: 2019/12/8  点“+”不应该被选中
                         super.onSelected(position, view);
+                        classPosition = accountClasses.get(position).getClassId();
                         if (position == (accountClasses.size() -1)) {
+                            classPosition = -1;
                             final EditText editText = new EditText(getContext());
                             AlertDialog dialog = new AlertDialog.Builder(getContext())
                                     .setTitle(getResources().getString(R.string.add_class))
@@ -112,17 +116,61 @@ public class AddAccountFragment extends Fragment {
                                     })
                                     .create();
                             dialog.show();
+                        } else {
+                            tagLiveData.observe(AddAccountFragment.this, new Observer<List<AccountTag>>() {
+                                @Override
+                                public void onChanged(final List<AccountTag> tagList) {
+                                    if (tagList.size() == 0 || !tagList.get(tagList.size() -1).getTagDescribe().equals("+")) {
+                                        tagList.add(new AccountTag(0, "+"));
+                                    }
+                                    TagAdapter<AccountTag> tagAdapter = new TagAdapter<AccountTag>(tagList) {
+                                        @Override
+                                        public View getView(FlowLayout parent, int position, AccountTag accountTag) {
+                                            LinearLayout linearLayout = (LinearLayout) layoutInflater.inflate(R.layout.layout_account_class, binding.tagLayout, false);
+                                            TextView textView = linearLayout.findViewById(R.id.class_describe);
+                                            textView.setText(accountTag.getTagDescribe());
+                                            return linearLayout;
+                                        }
+
+                                        @Override
+                                        public void onSelected(int position, View view) {
+                                            super.onSelected(position, view);
+                                            tagPosition = tagList.get(position).getTagId();
+                                            tagDescribe = tagList.get(position).getTagDescribe();
+                                            if (position == (tagList.size() -1)) {
+                                                tagPosition = -1;
+                                                final EditText editText = new EditText(getContext());
+                                                AlertDialog dialog = new AlertDialog.Builder(getContext())
+                                                        .setTitle(getResources().getString(R.string.add_class))
+                                                        .setView(editText)
+                                                        .setPositiveButton(getResources().getText(R.string.confirm), new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialogInterface, int i) {
+                                                                viewModel.insertAccountTag(new AccountTag(classPosition, editText.getText().toString()));
+                                                                viewModel.loadTagData(tagLiveData, classPosition);
+                                                            }
+                                                        })
+                                                        .setNegativeButton(getResources().getText(R.string.cancel), new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                                            }
+                                                        })
+                                                        .create();
+                                                dialog.show();
+                                            }
+                                        }
+                                    };
+                                    binding.tagLayout.setAdapter(tagAdapter);
+                                    tagAdapter.setSelectedList(0);
+                                }
+                            });
+                            viewModel.loadTagData(tagLiveData, classPosition);
                         }
                     }
                 };
                 binding.classLayout.setAdapter(classTagAdapter);
-                classTagAdapter.setSelected(0, accountClasses.get(0));
-            }
-        });
-        binding.classLayout.setOnSelectListener(new TagFlowLayout.OnSelectListener() {
-            @Override
-            public void onSelected(Set<Integer> selectPosSet) {
-
+                classTagAdapter.setSelectedList(0);
             }
         });
     }
@@ -135,10 +183,14 @@ public class AddAccountFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.finish) {
-            Navigation.findNavController(binding.toolbar).navigateUp();//上一页
-            //todo 插入的还不是真实的数据
-            viewModel.insertAccountItem(new AccountItem(System.currentTimeMillis(), Float.valueOf(binding.money.getText().toString()),
-                    1, 1, "晚餐"));
+            if (classPosition != -1 && tagPosition != -1) {
+                Navigation.findNavController(binding.toolbar).navigateUp();//上一页
+                //todo 插入的还不是真实的数据
+                viewModel.insertAccountItem(new AccountItem(System.currentTimeMillis(), Float.valueOf(binding.money.getText().toString()),
+                        classPosition, tagPosition, tagDescribe));
+            } else {
+                Toast.makeText(getContext(), getResources().getText(R.string.retry), Toast.LENGTH_LONG).show();
+            }
         }
         return true;
     }

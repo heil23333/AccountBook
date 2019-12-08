@@ -38,6 +38,10 @@ public class MainViewModel extends AndroidViewModel {
         }
     }
 
+    public void loadTagData(MutableLiveData<List<AccountTag>> tagData, int classId) {
+        repository.getAccountTag(tagData, classId);
+    }
+
     public void loadClassData(MutableLiveData<List<AccountClass>> classLiveData) {
         repository.getAccountClass(classLiveData);
     }
