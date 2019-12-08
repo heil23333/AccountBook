@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
 
 import com.heil.accountbook.callback.GetAccountItemCallback;
 import com.heil.accountbook.Repository;
@@ -12,9 +13,12 @@ import com.heil.accountbook.bean.AccountItem;
 import com.heil.accountbook.bean.AccountTag;
 import com.tencent.mmkv.MMKV;
 
+import java.util.List;
+
 public class MainViewModel extends AndroidViewModel {
     private Repository repository;
     private MMKV mmkv;
+    MutableLiveData<List<AccountClass>> classLiveData;
     public MainViewModel(@NonNull Application application) {
         super(application);
         repository = Repository.getInstance(application);
@@ -32,6 +36,10 @@ public class MainViewModel extends AndroidViewModel {
             insertAccountItem(new AccountItem(System.currentTimeMillis(), 1.0f, 1, 1, "早餐"));
             mmkv.encode("FIRST", false);
         }
+    }
+
+    public void loadClassData(MutableLiveData<List<AccountClass>> classLiveData) {
+        repository.getAccountClass(classLiveData);
     }
 
     public void insertAccountClass(AccountClass... accountClasses) {

@@ -25,7 +25,6 @@ import com.heil.accountbook.bean.AccountItemResult;
 import com.heil.accountbook.callback.GetAccountItemCallback;
 import com.heil.accountbook.R;
 import com.heil.accountbook.adapter.MyAccountItemAdapter;
-import com.heil.accountbook.bean.AccountItem;
 import com.heil.accountbook.databinding.FragmentMainBinding;
 import com.heil.accountbook.viewmodel.MainViewModel;
 

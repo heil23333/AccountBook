@@ -3,6 +3,7 @@ package com.heil.accountbook;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;
 
 import com.heil.accountbook.bean.AccountClass;
@@ -12,6 +13,8 @@ import com.heil.accountbook.bean.AccountTag;
 import com.heil.accountbook.callback.GetAccountItemCallback;
 import com.heil.accountbook.database.AccountDAO;
 import com.heil.accountbook.database.AccountDatabase;
+
+import java.util.List;
 
 public class Repository {
     private Context context;
@@ -29,6 +32,10 @@ public class Repository {
         return INSTANCE;
     }
 
+    public void getAccountClass(MutableLiveData<List<AccountClass>> classLiveData) {
+        new GetAccountClassAsyncTask(dao, classLiveData).execute();
+    }
+
     public void insertAccountClass(AccountClass... accountClasses) {
         new InsertAccountClass(dao).execute(accountClasses);
     }
@@ -43,6 +50,26 @@ public class Repository {
 
     public void getAccountItemData(GetAccountItemCallback callback) {
         new GetAccountItemAsyncTask(dao, callback).execute();
+    }
+
+    public static class GetAccountClassAsyncTask extends AsyncTask<Void, Void, List<AccountClass>> {
+        AccountDAO dao;
+        MutableLiveData<List<AccountClass>> classLiveData;
+
+        public GetAccountClassAsyncTask(AccountDAO dao, MutableLiveData<List<AccountClass>> classLiveData) {
+            this.dao = dao;
+            this.classLiveData = classLiveData;
+        }
+
+        @Override
+        protected List<AccountClass> doInBackground(Void... voids) {
+            return dao.getAllAccountClass();
+        }
+
+        @Override
+        protected void onPostExecute(List<AccountClass> accountClasses) {
+            classLiveData.setValue(accountClasses);
+        }
     }
 
     public static class GetAccountItemAsyncTask extends AsyncTask<Void, Void, Void> {

@@ -15,14 +15,13 @@ import java.util.List;
 
 @Dao
 public interface AccountDAO {
-    @Query("SELECT * FROM account_item")
-    DataSource.Factory<Integer, AccountItem> getAllAccountItem();
     @Insert
     void insertAccountItem(AccountItem... accountItems);
     @Delete
     void deletAccount(AccountItem... accountItems);
-
-    @Query("SELECT item.id, account_money, account_time, account_describe, class_describe, tag_describe FROM account_item item JOIN account_class class JOIN account_tag tag WHERE item.account_class = class.id AND item.account_tag = tag.id")
+    @Query("SELECT item.id, account_money, account_time, account_describe, class_describe, tag_describe " +
+            "FROM account_item item JOIN account_class class JOIN account_tag tag WHERE item.account_class = class.id " +
+            "AND item.account_tag = tag.id ORDER BY account_time DESC")
     DataSource.Factory<Integer, AccountItemResult> getRelAccountItem();
 
     @Insert

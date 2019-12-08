@@ -11,7 +11,7 @@ public class AccountClass {
     public int classId;
 
     @ColumnInfo(name = "class_describe")
-    public String classDescribe;
+    private String classDescribe;
 
     public AccountClass(String classDescribe) {
         this.classDescribe = classDescribe;
