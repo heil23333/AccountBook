@@ -34,6 +34,7 @@ import com.heil.accountbook.bean.AccountClass;
 import com.heil.accountbook.bean.AccountItem;
 import com.heil.accountbook.bean.AccountTag;
 import com.heil.accountbook.databinding.FragmentAddAccountBinding;
+import com.heil.accountbook.utils.ViewUtils;
 import com.heil.accountbook.viewmodel.MainViewModel;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
@@ -104,6 +105,7 @@ public class AddAccountFragment extends Fragment {
                                     .setPositiveButton(getResources().getText(R.string.confirm), new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
+                                            ViewUtils.hideSoftKeyboard(getContext(), editText);
                                             viewModel.insertAccountClass(new AccountClass(editText.getText().toString()));
                                             viewModel.loadClassData(classLiveData);
                                         }
@@ -111,7 +113,7 @@ public class AddAccountFragment extends Fragment {
                                     .setNegativeButton(getResources().getText(R.string.cancel), new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-
+                                            ViewUtils.hideSoftKeyboard(getContext(), editText);
                                         }
                                     })
                                     .create();
@@ -146,6 +148,7 @@ public class AddAccountFragment extends Fragment {
                                                         .setPositiveButton(getResources().getText(R.string.confirm), new DialogInterface.OnClickListener() {
                                                             @Override
                                                             public void onClick(DialogInterface dialogInterface, int i) {
+                                                                ViewUtils.hideSoftKeyboard(getContext(), editText);
                                                                 viewModel.insertAccountTag(new AccountTag(classPosition, editText.getText().toString()));
                                                                 viewModel.loadTagData(tagLiveData, classPosition);
                                                             }
@@ -153,7 +156,7 @@ public class AddAccountFragment extends Fragment {
                                                         .setNegativeButton(getResources().getText(R.string.cancel), new DialogInterface.OnClickListener() {
                                                             @Override
                                                             public void onClick(DialogInterface dialogInterface, int i) {
-
+                                                                ViewUtils.hideSoftKeyboard(getContext(), editText);
                                                             }
                                                         })
                                                         .create();
@@ -183,11 +186,11 @@ public class AddAccountFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.finish) {
-            if (classPosition != -1 && tagPosition != -1) {
-                Navigation.findNavController(binding.toolbar).navigateUp();//上一页
-                //todo 插入的还不是真实的数据
+            if (classPosition != -1 && tagPosition != -1 && binding.money.getText().length() > 0) {
+                ViewUtils.hideSoftKeyboard(getContext(), binding.money);
                 viewModel.insertAccountItem(new AccountItem(System.currentTimeMillis(), Float.valueOf(binding.money.getText().toString()),
                         classPosition, tagPosition, tagDescribe));
+                Navigation.findNavController(binding.toolbar).navigateUp();//上一页
             } else {
                 Toast.makeText(getContext(), getResources().getText(R.string.retry), Toast.LENGTH_LONG).show();
             }
