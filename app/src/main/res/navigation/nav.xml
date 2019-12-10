@@ -19,4 +19,9 @@
         android:name="com.heil.accountbook.view.AddAccountFragment"
         android:label="fragment_add_account"
         tools:layout="@layout/fragment_add_account" />
+    <fragment
+        android:id="@+id/walletFragment"
+        android:name="com.heil.accountbook.view.WalletFragment"
+        android:label="fragment_wallet"
+        tools:layout="@layout/fragment_wallet" />
 </navigation>

@@ -4,25 +4,46 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.paging.DataSource;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
 
+import com.heil.accountbook.adapter.MyAccountItemAdapter;
+import com.heil.accountbook.bean.AccountItemResult;
 import com.heil.accountbook.callback.GetAccountItemCallback;
 import com.heil.accountbook.Repository;
 import com.heil.accountbook.bean.AccountClass;
 import com.heil.accountbook.bean.AccountItem;
 import com.heil.accountbook.bean.AccountTag;
+import com.heil.accountbook.callback.LoadedAccountData;
 import com.tencent.mmkv.MMKV;
 
 import java.util.List;
 
-public class MainViewModel extends AndroidViewModel {
+public class MainViewModel extends AndroidViewModel implements GetAccountItemCallback {
     private Repository repository;
     private MMKV mmkv;
-    MutableLiveData<List<AccountClass>> classLiveData;
+    private MutableLiveData<List<AccountClass>> classLiveData;
+    private LiveData<PagedList<AccountItemResult>> accountList;
+
+    public void setLoadedAccountData(LoadedAccountData loadedAccountData) {
+        this.loadedAccountData = loadedAccountData;
+    }
+
+    private LoadedAccountData loadedAccountData;
+
+    public LiveData<PagedList<AccountItemResult>> getAccountList() {
+        return accountList;
+    }
+
     public MainViewModel(@NonNull Application application) {
         super(application);
         repository = Repository.getInstance(application);
         mmkv = MMKV.defaultMMKV();
+        getAccountItemData(this);
         if (mmkv.decodeBool("FIRST", true)) {
             AccountClass accountClass = new AccountClass("吃喝");
             insertAccountClass(accountClass);
@@ -60,5 +81,12 @@ public class MainViewModel extends AndroidViewModel {
 
     public void getAccountItemData(GetAccountItemCallback callback) {
         repository.getAccountItemData(callback);
+    }
+
+    @Override
+    public void gotItems(DataSource.Factory<Integer, AccountItemResult> data) {
+        System.out.println("hl-------gotItems");
+        accountList = new LivePagedListBuilder<>(data, 10).build();
+        loadedAccountData.load();
     }
 }

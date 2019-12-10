@@ -29,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.heil.accountbook.MainActivity;
 import com.heil.accountbook.R;
 import com.heil.accountbook.bean.AccountClass;
 import com.heil.accountbook.bean.AccountItem;
@@ -67,7 +68,7 @@ public class AddAccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_account, container, false);
-        viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(MainViewModel.class);
         return binding.getRoot();
     }
 
@@ -75,6 +76,9 @@ public class AddAccountFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((AppCompatActivity)getActivity()).setSupportActionBar(binding.toolbar);//不加这一行不会显示Menu哦
+        if (MainActivity.navigationView != null) {
+            MainActivity.navigationView.setVisibility(View.GONE);
+        }
         classLiveData = new MutableLiveData<>();
         tagLiveData = new MutableLiveData<>();
         viewModel.loadClassData(classLiveData);

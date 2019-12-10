@@ -9,4 +9,6 @@
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
     <string name="retry">请重新选择</string>
+    <string name="wallet">钱包</string>
+    <string name="account">账目</string>
 </resources>
