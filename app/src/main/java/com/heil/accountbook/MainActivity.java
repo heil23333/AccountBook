@@ -1,42 +1,34 @@
 package com.heil.accountbook;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.navigation.NavController;
-import androidx.navigation.NavHostController;
-import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.FragmentActivity;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.heil.accountbook.utils.ViewUtils;
+import com.heil.accountbook.adapter.MainAdapter;
+import com.heil.accountbook.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends FragmentActivity {
     public static BottomNavigationView navigationView;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        navigationView = binding.navView;
 
-        ViewUtils.setStateBarColor(this, R.color.colorPrimary);
-        navigationView = findViewById(R.id.navView);
-
-        NavController navController = Navigation.findNavController(this, R.id.fragment);
-        NavigationUI.setupWithNavController(navigationView, navController);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        NavController navController = Navigation.findNavController(this, R.id.fragment);
-        return NavigationUI.onNavDestinationSelected(item, navController)
-                || super.onOptionsItemSelected(item);
+        binding.mainContent.setAdapter(new MainAdapter(this));
+        binding.mainContent.setCurrentItem(0);
+        binding.navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                binding.mainContent.setCurrentItem(menuItem.getItemId() == R.id.account ? 0 : 1);
+                return true;
+            }
+        });
     }
 }
