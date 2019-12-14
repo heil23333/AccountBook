@@ -50,7 +50,7 @@ public class AddAccountFragment extends Fragment {
     private MainViewModel viewModel;
     private MutableLiveData<List<AccountClass>> classLiveData;
     private MutableLiveData<List<AccountTag>> tagLiveData;
-    private int classPosition = 0, tagPosition = 0;
+    private int classPosition = 0, tagPosition = -1;
     private String tagDescribe = "";
 
     public AddAccountFragment() {
@@ -169,7 +169,6 @@ public class AddAccountFragment extends Fragment {
                                         }
                                     };
                                     binding.tagLayout.setAdapter(tagAdapter);
-                                    tagAdapter.setSelectedList(0);
                                 }
                             });
                             viewModel.loadTagData(tagLiveData, classPosition);

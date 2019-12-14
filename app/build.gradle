@@ -36,12 +36,15 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.material:material:1.0.0'
 
+    //Androidx组件
     implementation "androidx.paging:paging-runtime:$paging_version"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
     implementation 'androidx.navigation:navigation-fragment:2.1.0'
     implementation 'androidx.navigation:navigation-ui:2.1.0'
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+
     implementation 'com.tencent:mmkv:1.0.23'
     implementation 'com.hyman:flowlayout-lib:1.1.2'
 }
