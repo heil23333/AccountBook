@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.heil.accountbook.adapter.MainAdapter;
 import com.heil.accountbook.databinding.ActivityMainBinding;
+import com.heil.accountbook.utils.ViewUtils;
 
 public class MainActivity extends FragmentActivity {
     public static BottomNavigationView navigationView;
@@ -21,7 +22,7 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         navigationView = binding.navView;
-
+        ViewUtils.setStateBarColor(this, R.color.colorPrimary);
         binding.mainContent.setAdapter(new MainAdapter(this));
         binding.mainContent.setCurrentItem(0);
         binding.mainContent.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {

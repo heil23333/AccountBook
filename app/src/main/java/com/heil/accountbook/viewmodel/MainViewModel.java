@@ -5,13 +5,10 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
 import androidx.paging.DataSource;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
-import com.heil.accountbook.adapter.MyAccountItemAdapter;
 import com.heil.accountbook.bean.AccountItemResult;
 import com.heil.accountbook.callback.GetAccountItemCallback;
 import com.heil.accountbook.Repository;
@@ -21,12 +18,9 @@ import com.heil.accountbook.bean.AccountTag;
 import com.heil.accountbook.callback.LoadedAccountData;
 import com.tencent.mmkv.MMKV;
 
-import java.util.List;
-
 public class MainViewModel extends AndroidViewModel implements GetAccountItemCallback {
     private Repository repository;
     private MMKV mmkv;
-    private MutableLiveData<List<AccountClass>> classLiveData;
     private LiveData<PagedList<AccountItemResult>> accountList;
 
     public void setLoadedAccountData(LoadedAccountData loadedAccountData) {
@@ -59,14 +53,6 @@ public class MainViewModel extends AndroidViewModel implements GetAccountItemCal
         }
     }
 
-    public void loadTagData(MutableLiveData<List<AccountTag>> tagData, int classId) {
-        repository.getAccountTag(tagData, classId);
-    }
-
-    public void loadClassData(MutableLiveData<List<AccountClass>> classLiveData) {
-        repository.getAccountClass(classLiveData);
-    }
-
     public void insertAccountClass(AccountClass... accountClasses) {
         repository.insertAccountClass(accountClasses);
     }
@@ -85,7 +71,6 @@ public class MainViewModel extends AndroidViewModel implements GetAccountItemCal
 
     @Override
     public void gotItems(DataSource.Factory<Integer, AccountItemResult> data) {
-        System.out.println("hl-------gotItems");
         accountList = new LivePagedListBuilder<>(data, 10).build();
         loadedAccountData.load();
     }
