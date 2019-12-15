@@ -1,5 +1,7 @@
 package com.heil.accountbook.bean;
 
+import android.view.View;
+
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -50,6 +52,10 @@ public class WalletItem {
 
     public void setBalance(float balance) {
         this.balance = balance;
+    }
+
+    public int isCredit() {
+        return this.walletType == 1 ? View.VISIBLE : View.GONE;
     }
 
     public WalletItem(String walletDescribe, int walletType, float balance, float quota) {

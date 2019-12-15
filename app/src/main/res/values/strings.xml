@@ -24,4 +24,10 @@
     <string name="balance_or_used_quota">余额或已用额度</string>
     <string name="quota">额度：</string>
     <string name="only_credit">非信用卡不填</string>
+    <string name="current_wallet">通用账户</string>
+    <string name="credit_wallet">信用账户</string>
+    <string name="investment_wallet">通用账户</string>
+    <string name="had_used">已使用:</string>
+    <string name="can_used">可用额度:</string>
+    <string name="yuan">元</string>
 </resources>

@@ -12,6 +12,7 @@ import com.heil.accountbook.bean.AccountItemResult;
 import com.heil.accountbook.bean.AccountTag;
 import com.heil.accountbook.bean.WalletItem;
 import com.heil.accountbook.callback.GetAccountItemCallback;
+import com.heil.accountbook.callback.GetWalletItemCallback;
 import com.heil.accountbook.database.AccountDAO;
 import com.heil.accountbook.database.AccountDatabase;
 
@@ -60,6 +61,33 @@ public class Repository {
 
     public void insertWalletItem(WalletItem... walletItems) {
         new InsertWalletItem(dao).execute(walletItems);
+    }
+
+    public void getWalletItemData(GetWalletItemCallback callback) {
+        new GetWalletItemData(dao, callback).execute();
+    }
+
+    public static class GetWalletItemData extends AsyncTask<Void, Void, Void> {
+        AccountDAO dao;
+        GetWalletItemCallback callback;
+        DataSource.Factory<Integer, WalletItem> factory;
+
+        public GetWalletItemData(AccountDAO dao, GetWalletItemCallback callback) {
+            this.dao = dao;
+            this.callback = callback;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            factory = dao.getAllWalletItem();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            callback.gotWallet(factory);
+        }
     }
 
     public static class GetAccountTagAsyncTask extends AsyncTask<Integer, Void, List<AccountTag>> {

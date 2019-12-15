@@ -10,34 +10,31 @@ import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
 
 import com.heil.accountbook.bean.AccountItemResult;
+import com.heil.accountbook.bean.WalletItem;
 import com.heil.accountbook.callback.GetAccountItemCallback;
 import com.heil.accountbook.Repository;
 import com.heil.accountbook.bean.AccountClass;
 import com.heil.accountbook.bean.AccountItem;
 import com.heil.accountbook.bean.AccountTag;
+import com.heil.accountbook.callback.GetWalletItemCallback;
 import com.heil.accountbook.callback.LoadedAccountData;
+import com.heil.accountbook.callback.LoadedWalletData;
 import com.tencent.mmkv.MMKV;
 
-public class MainViewModel extends AndroidViewModel implements GetAccountItemCallback {
+public class MainViewModel extends AndroidViewModel implements GetAccountItemCallback, GetWalletItemCallback {
     private Repository repository;
     private MMKV mmkv;
     private LiveData<PagedList<AccountItemResult>> accountList;
-
-    public void setLoadedAccountData(LoadedAccountData loadedAccountData) {
-        this.loadedAccountData = loadedAccountData;
-    }
-
     private LoadedAccountData loadedAccountData;
-
-    public LiveData<PagedList<AccountItemResult>> getAccountList() {
-        return accountList;
-    }
+    private LoadedWalletData loadedWalletData;
+    private LiveData<PagedList<WalletItem>> wallets;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
         repository = Repository.getInstance(application);
         mmkv = MMKV.defaultMMKV();
         getAccountItemData(this);
+        getWalletItemData(this);
         if (mmkv.decodeBool("FIRST", true)) {
             AccountClass accountClass = new AccountClass("吃喝");
             insertAccountClass(accountClass);
@@ -51,6 +48,22 @@ public class MainViewModel extends AndroidViewModel implements GetAccountItemCal
             insertAccountItem(new AccountItem(System.currentTimeMillis(), 1.0f, 1, 1, "早餐"));
             mmkv.encode("FIRST", false);
         }
+    }
+
+    public LiveData<PagedList<WalletItem>> getWallets() {
+        return wallets;
+    }
+
+    public void setLoadedWalletData(LoadedWalletData loadedWalletData) {
+        this.loadedWalletData = loadedWalletData;
+    }
+
+    public void setLoadedAccountData(LoadedAccountData loadedAccountData) {
+        this.loadedAccountData = loadedAccountData;
+    }
+
+    public LiveData<PagedList<AccountItemResult>> getAccountList() {
+        return accountList;
     }
 
     public void insertAccountClass(AccountClass... accountClasses) {//插入账目分类
@@ -72,6 +85,20 @@ public class MainViewModel extends AndroidViewModel implements GetAccountItemCal
     @Override
     public void gotItems(DataSource.Factory<Integer, AccountItemResult> data) {
         accountList = new LivePagedListBuilder<>(data, 10).build();
-        loadedAccountData.load();
+        if (loadedAccountData != null) {
+            loadedAccountData.load();
+        }
+    }
+
+    public void getWalletItemData(GetWalletItemCallback callback) {
+        repository.getWalletItemData(callback);
+    }
+
+    @Override
+    public void gotWallet(DataSource.Factory<Integer, WalletItem> data) {
+        wallets = new LivePagedListBuilder<>(data, 10).build();
+        if (loadedWalletData != null) {
+            loadedWalletData.load();
+        }
     }
 }

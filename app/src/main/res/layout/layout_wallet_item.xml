@@ -1,13 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
+        <variable
+            name="result"
+            type="com.heil.accountbook.bean.WalletItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="65dp">
 
+        <TextView
+            android:id="@+id/wallet_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{result.walletDescribe}"
+            android:textColor="#F2020101"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/wallet_describe"
+            app:layout_constraintEnd_toStartOf="@+id/guideline9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="支付宝" />
+
+        <TextView
+            android:id="@+id/wallet_describe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{result.walletType == 0 ? @string/current_wallet : result.walletType == 1 ? @string/credit_wallet : @string/investment_wallet}'
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/wallet_name"
+            app:layout_constraintVertical_bias="0.318"
+            tools:text="通用账户" />
+
+        <TextView
+            android:id="@+id/balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{(result.walletType == 1 ? @string/had_used : @string/balance) + String.valueOf(result.balance) + @string/yuan}'
+            android:textColor="#F2020101"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/quota"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline9"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="余额" />
+
+        <TextView
+            android:id="@+id/quota"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text='@{@string/can_used + String.valueOf(result.quota - result.balance) + @string/yuan}'
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline9"
+            app:layout_constraintTop_toBottomOf="@+id/balance"
+            android:visibility="@{result.isCredit()}"
+            tools:text="可用额度" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
