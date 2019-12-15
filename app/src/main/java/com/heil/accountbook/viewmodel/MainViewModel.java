@@ -53,15 +53,15 @@ public class MainViewModel extends AndroidViewModel implements GetAccountItemCal
         }
     }
 
-    public void insertAccountClass(AccountClass... accountClasses) {
+    public void insertAccountClass(AccountClass... accountClasses) {//插入账目分类
         repository.insertAccountClass(accountClasses);
     }
 
-    public void insertAccountTag(AccountTag... accountTags) {
+    public void insertAccountTag(AccountTag... accountTags) {//插入账目标签
         repository.insertAccountTag(accountTags);
     }
 
-    public void insertAccountItem(AccountItem... accountItems) {
+    public void insertAccountItem(AccountItem... accountItems) {//插入账目
         repository.insertAccountItem(accountItems);
     }
 

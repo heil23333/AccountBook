@@ -10,13 +10,14 @@ import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.heil.accountbook.R;
 import com.heil.accountbook.bean.AccountItemResult;
 import com.heil.accountbook.databinding.LayoutAccountItemBinding;
 
-public class MyAccountItemAdapter extends PagedListAdapter<AccountItemResult, MyAccountItemAdapter.AccountItemViewHolder> {
+public class MyPagedListAdapter extends PagedListAdapter<AccountItemResult, MyPagedListAdapter.AccountItemViewHolder> {
 
-    public MyAccountItemAdapter() {
+    private int layoutId;
+
+    public MyPagedListAdapter(int layoutId) {
         super(new DiffUtil.ItemCallback<AccountItemResult>() {
             @Override
             public boolean areItemsTheSame(@NonNull AccountItemResult oldItem, @NonNull AccountItemResult newItem) {
@@ -28,12 +29,13 @@ public class MyAccountItemAdapter extends PagedListAdapter<AccountItemResult, My
                 return oldItem.getAccount_time() == newItem.getAccount_time();
             }
         });
+        this.layoutId = layoutId;
     }
 
     @NonNull
     @Override
     public AccountItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutAccountItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.layout_account_item, parent, false);
+        LayoutAccountItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), layoutId, parent, false);
         return new AccountItemViewHolder(binding);
     }
 

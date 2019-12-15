@@ -1,6 +1,5 @@
 package com.heil.accountbook.view;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -21,7 +20,7 @@ import android.view.ViewGroup;
 import com.heil.accountbook.MainActivity;
 import com.heil.accountbook.bean.AccountItemResult;
 import com.heil.accountbook.R;
-import com.heil.accountbook.adapter.MyAccountItemAdapter;
+import com.heil.accountbook.adapter.MyPagedListAdapter;
 import com.heil.accountbook.callback.LoadedAccountData;
 import com.heil.accountbook.databinding.FragmentMainBinding;
 import com.heil.accountbook.viewmodel.MainViewModel;
@@ -34,7 +33,7 @@ public class MainFragment extends Fragment implements LoadedAccountData {
 
     private MainViewModel viewModel;
     private FragmentMainBinding binding;
-    private MyAccountItemAdapter accountItemAdapter;
+    private MyPagedListAdapter accountItemAdapter;
 
     public MainFragment() {
         // Required empty public constructor
@@ -69,7 +68,7 @@ public class MainFragment extends Fragment implements LoadedAccountData {
                 startActivity(new Intent(getContext(), AddAccountActivity.class));
             }
         });
-        accountItemAdapter = new MyAccountItemAdapter();
+        accountItemAdapter = new MyPagedListAdapter(R.layout.layout_account_item);
         binding.recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
         binding.recyclerView.setAdapter(accountItemAdapter);
