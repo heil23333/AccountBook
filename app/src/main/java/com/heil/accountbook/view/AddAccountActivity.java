@@ -48,6 +48,19 @@ public class AddAccountActivity extends BaseActivity{
         classLiveData = new MutableLiveData<>();
         tagLiveData = new MutableLiveData<>();
         viewModel.loadClassData(classLiveData);
+        binding.finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (classPosition != -1 && tagPosition != -1 && binding.money.getText().length() > 0) {
+                    ViewUtils.hideSoftKeyboard(AddAccountActivity.this, binding.money);
+                    viewModel.insertAccountItem(new AccountItem(System.currentTimeMillis(), Float.valueOf(binding.money.getText().toString()),
+                            classPosition, tagPosition, tagDescribe));
+                    AddAccountActivity.this.finish();
+                } else {
+                    Toast.makeText(AddAccountActivity.this, getResources().getText(R.string.retry), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
         classLiveData.observe(this, new Observer<List<AccountClass>>() {
             @Override
             public void onChanged(final List<AccountClass> accountClasses) {
@@ -112,7 +125,7 @@ public class AddAccountActivity extends BaseActivity{
                                                 tagPosition = -1;
                                                 final EditText editText = new EditText(AddAccountActivity.this);
                                                 AlertDialog dialog = new AlertDialog.Builder(AddAccountActivity.this)
-                                                        .setTitle(getResources().getString(R.string.add_class))
+                                                        .setTitle(getResources().getString(R.string.add_tag))
                                                         .setView(editText)
                                                         .setPositiveButton(getResources().getText(R.string.confirm), new DialogInterface.OnClickListener() {
                                                             @Override
@@ -144,26 +157,5 @@ public class AddAccountActivity extends BaseActivity{
                 classTagAdapter.setSelectedList(0);
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.add_fragment_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.finish) {
-            if (classPosition != -1 && tagPosition != -1 && binding.money.getText().length() > 0) {
-                ViewUtils.hideSoftKeyboard(this, binding.money);
-                viewModel.insertAccountItem(new AccountItem(System.currentTimeMillis(), Float.valueOf(binding.money.getText().toString()),
-                        classPosition, tagPosition, tagDescribe));
-                this.finish();
-            } else {
-                Toast.makeText(this, getResources().getText(R.string.retry), Toast.LENGTH_LONG).show();
-            }
-        }
-        return true;
     }
 }
