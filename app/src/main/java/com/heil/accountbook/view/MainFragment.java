@@ -62,12 +62,6 @@ public class MainFragment extends Fragment implements LoadedAccountData {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        binding.add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getContext(), AddAccountActivity.class));
-            }
-        });
         accountItemAdapter = new MyPagedListAdapter(R.layout.layout_account_item);
         binding.recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL,false));
