@@ -10,6 +10,7 @@ import com.heil.accountbook.bean.AccountClass;
 import com.heil.accountbook.bean.AccountItem;
 import com.heil.accountbook.bean.AccountItemResult;
 import com.heil.accountbook.bean.AccountTag;
+import com.heil.accountbook.bean.WalletItem;
 
 import java.util.List;
 
@@ -24,15 +25,29 @@ public interface AccountDAO {
             "AND item.account_tag = tag.id ORDER BY account_time DESC")
     DataSource.Factory<Integer, AccountItemResult> getRelAccountItem();
 
+    /**
+     * class相关
+     */
     @Insert
     void insertAccountClass(AccountClass... accountClasses);
     @Query("SELECT * FROM account_class")
-    List<AccountClass> getAllAccountClass();
+    List<AccountClass> getAllAccountClass();//查找所有的class
     @Delete
-    void deletAccountClass(AccountClass... accountClasses);
+    void deletAccountClass(AccountClass... accountClasses);//删除所有的class
 
+    /**
+     * tag相关
+     */
     @Query("SELECT * FROM account_tag WHERE class_id = :classId")
-    List<AccountTag> getTagByClassId(int classId);
+    List<AccountTag> getTagByClassId(int classId);//根据class查找对应的tag
     @Insert
-    void insertAccountTag(AccountTag... accountTags);
+    void insertAccountTag(AccountTag... accountTags);//插入账目tag
+
+    /**
+     * wallet相关
+     */
+    @Insert
+    void insertWalletItem(WalletItem... walletItems);//插入资产
+    @Query("SELECT * FROM wallet_item")
+    DataSource.Factory<Integer, WalletItem> getAllWalletItem();
 }

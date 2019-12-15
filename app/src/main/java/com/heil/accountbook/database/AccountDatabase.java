@@ -9,8 +9,9 @@ import androidx.room.RoomDatabase;
 import com.heil.accountbook.bean.AccountClass;
 import com.heil.accountbook.bean.AccountItem;
 import com.heil.accountbook.bean.AccountTag;
+import com.heil.accountbook.bean.WalletItem;
 
-@Database(entities = {AccountItem.class, AccountClass.class, AccountTag.class}, version = 1, exportSchema = false)
+@Database(entities = {AccountItem.class, AccountClass.class, AccountTag.class, WalletItem.class}, version = 1, exportSchema = false)
 public abstract class AccountDatabase extends RoomDatabase {
     private static volatile AccountDatabase INSTANCE;
     public abstract AccountDAO getAccountDAO();

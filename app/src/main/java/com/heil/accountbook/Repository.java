@@ -10,6 +10,7 @@ import com.heil.accountbook.bean.AccountClass;
 import com.heil.accountbook.bean.AccountItem;
 import com.heil.accountbook.bean.AccountItemResult;
 import com.heil.accountbook.bean.AccountTag;
+import com.heil.accountbook.bean.WalletItem;
 import com.heil.accountbook.callback.GetAccountItemCallback;
 import com.heil.accountbook.database.AccountDAO;
 import com.heil.accountbook.database.AccountDatabase;
@@ -55,6 +56,10 @@ public class Repository {
 
     public void getAccountItemData(GetAccountItemCallback callback) {
         new GetAccountItemAsyncTask(dao, callback).execute();
+    }
+
+    public void insertWalletItem(WalletItem... walletItems) {
+        new InsertWalletItem(dao).execute(walletItems);
     }
 
     public static class GetAccountTagAsyncTask extends AsyncTask<Integer, Void, List<AccountTag>> {
@@ -161,6 +166,20 @@ public class Repository {
         @Override
         protected Void doInBackground(AccountClass... accountClasses) {
             dao.insertAccountClass(accountClasses);
+            return null;
+        }
+    }
+
+    public static class InsertWalletItem extends AsyncTask<WalletItem, Void, Void> {
+        private AccountDAO dao;
+
+        public InsertWalletItem(AccountDAO dao) {
+            this.dao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(WalletItem... walletItems) {
+            dao.insertWalletItem(walletItems);
             return null;
         }
     }

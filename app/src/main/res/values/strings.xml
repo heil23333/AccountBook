@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">AccountBook</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="finish">完成</string>
     <string name="add_class">增加分类</string>
     <string name="add_tag">增加标签</string>
@@ -11,4 +8,20 @@
     <string name="retry">请重新选择</string>
     <string name="wallet">钱包</string>
     <string name="account">账目</string>
+    <string name="please_select_wallet_type">请选择账户类型</string>
+    <string name="create_success">创建成功</string>
+    <string name="quota_cant_empt">信用账户需填写额度</string>
+    <string name="number_must_positive">请输入正数</string>
+    <string name="balance_cant_over_quota">已用额度不能超过总额度</string>
+    <string name="name_and_balance_cant_empt">账户名和余额不能为空</string>
+    <string name="create_wallet">新建账户</string>
+    <string name="wallet_name">账户名：</string>
+    <string name="wallet_type">账户类型：</string>
+    <string name="current">通用</string>
+    <string name="credit">信用</string>
+    <string name="investment">投资</string>
+    <string name="balance">余额：</string>
+    <string name="balance_or_used_quota">余额或已用额度</string>
+    <string name="quota">额度：</string>
+    <string name="only_credit">非信用卡不填</string>
 </resources>
