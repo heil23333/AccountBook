@@ -1,5 +1,6 @@
 package com.heil.accountbook.adapter;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,16 +42,23 @@ public class MyAccountItemAdapter extends PagedListAdapter<AccountItemResult, My
         holder.accountItemClass.setText(getItem(position).getClass_describe());
         holder.accountItemMoney.setText(String.valueOf(getItem(position).getAccount_money()));
         holder.accountItemTime.setText(String.valueOf(getItem(position).getRealTime()));
+        if (!TextUtils.isEmpty(getItem(position).getWallet_describe())) {
+            holder.wallet.setVisibility(View.VISIBLE);
+            holder.wallet.setText(getItem(position).getWallet_describe());
+        } else {
+            holder.wallet.setVisibility(View.GONE);
+        }
     }
 
     static class AccountItemViewHolder extends RecyclerView.ViewHolder{
-        TextView accountItemTag, accountItemClass, accountItemMoney, accountItemTime;
+        TextView accountItemTag, accountItemClass, accountItemMoney, accountItemTime, wallet;
         public AccountItemViewHolder(View view) {
             super(view);
             accountItemTag = view.findViewById(R.id.accountItemTag);
             accountItemClass = view.findViewById(R.id.accountItemClass);
             accountItemMoney = view.findViewById(R.id.accountItemMoney);
             accountItemTime = view.findViewById(R.id.accountItemTime);
+            wallet = view.findViewById(R.id.wallet);
         }
     }
 }

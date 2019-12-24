@@ -24,11 +24,11 @@
             android:id="@+id/accountItemClass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="吃喝"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/accountItemTag"
             app:layout_constraintStart_toStartOf="@+id/accountItemTag"
-            app:layout_constraintTop_toBottomOf="@+id/accountItemTag" />
+            app:layout_constraintTop_toBottomOf="@+id/accountItemTag"
+            tools:text="吃喝" />
 
         <TextView
             android:id="@+id/accountItemMoney"
@@ -36,22 +36,32 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginLeft="32dp"
-            tools:text="10.05"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/accountItemTime"
             app:layout_constraintStart_toEndOf="@+id/accountItemClass"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="10.05" />
 
         <TextView
             android:id="@+id/accountItemTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/wallet"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/accountItemMoney"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="12-24 22:49" />
+
+        <TextView
+            android:id="@+id/wallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/accountItemTime"
+            app:layout_constraintStart_toStartOf="@+id/accountItemTime"
+            app:layout_constraintTop_toBottomOf="@+id/accountItemTime"
+            tools:text="现金" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

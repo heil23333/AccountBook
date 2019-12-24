@@ -20,9 +20,9 @@ public interface AccountDAO {
     void insertAccountItem(AccountItem... accountItems);
     @Delete
     void deletAccount(AccountItem... accountItems);
-    @Query("SELECT item.id, account_money, account_time, account_describe, class_describe, tag_describe " +
-            "FROM account_item item JOIN account_class class JOIN account_tag tag WHERE item.account_class = class.id " +
-            "AND item.account_tag = tag.id ORDER BY account_time DESC")
+    @Query("SELECT item.id, account_money, account_time, account_describe, class_describe, tag_describe, wallet.wallet_describe " +
+            "FROM account_item item JOIN account_class class JOIN account_tag tag LEFT JOIN wallet_item wallet WHERE item.account_class = class.id " +
+            "AND item.account_tag = tag.id AND wallet._id = item.wallet_id ORDER BY account_time DESC")
     DataSource.Factory<Integer, AccountItemResult> getRelAccountItem();
 
     /**
@@ -50,4 +50,6 @@ public interface AccountDAO {
     void insertWalletItem(WalletItem... walletItems);//插入资产
     @Query("SELECT * FROM wallet_item")
     DataSource.Factory<Integer, WalletItem> getAllWalletItem();
+    @Query("SELECT * FROM wallet_item")
+    List<WalletItem> getWalletForAddAccount();
 }

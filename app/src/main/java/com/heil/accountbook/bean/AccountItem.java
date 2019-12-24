@@ -28,12 +28,16 @@ public class AccountItem {
     @ColumnInfo(name = "account_describe")
     public String accountDescribe;
 
-    public AccountItem(long accountTime, float accountMoney, int accountClass, int accountTag, String accountDescribe) {
+    @ColumnInfo(name = "wallet_id", defaultValue = "-1")
+    public int walletId;
+
+    public AccountItem(long accountTime, float accountMoney, int accountClass, int accountTag, String accountDescribe, int walletId) {
         this.accountTime = accountTime;
         this.accountMoney = accountMoney;
         this.accountClass = accountClass;
         this.accountTag = accountTag;
         this.accountDescribe = accountDescribe;
+        this.walletId = walletId;
     }
 
     public int getId() {
@@ -78,5 +82,13 @@ public class AccountItem {
 
     public void setAccountDescribe(String accountDescribe) {
         this.accountDescribe = accountDescribe;
+    }
+
+    public int getWalletId() {
+        return walletId;
+    }
+
+    public void setWalletId(int walletId) {
+        this.walletId = walletId;
     }
 }

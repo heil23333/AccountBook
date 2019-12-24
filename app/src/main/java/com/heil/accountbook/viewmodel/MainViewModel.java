@@ -45,7 +45,7 @@ public class MainViewModel extends AndroidViewModel implements GetAccountItemCal
             accountTags[3] = new AccountTag(1, "零食");
             accountTags[4] = new AccountTag(1, "宵夜");
             insertAccountTag(accountTags);
-            insertAccountItem(new AccountItem(System.currentTimeMillis(), 1.0f, 1, 1, "早餐"));
+            insertAccountItem(new AccountItem(System.currentTimeMillis(), 1.0f, 1, 1, "早餐", -1));
             mmkv.encode("FIRST", false);
         }
     }

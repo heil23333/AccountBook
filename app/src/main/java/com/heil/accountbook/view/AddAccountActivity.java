@@ -2,15 +2,12 @@ package com.heil.accountbook.view;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
@@ -23,6 +20,7 @@ import com.heil.accountbook.R;
 import com.heil.accountbook.bean.AccountClass;
 import com.heil.accountbook.bean.AccountItem;
 import com.heil.accountbook.bean.AccountTag;
+import com.heil.accountbook.bean.WalletItem;
 import com.heil.accountbook.databinding.ActivityAddAccountBinding;
 import com.heil.accountbook.utils.ViewUtils;
 import com.heil.accountbook.viewmodel.AddAccountViewModel;
@@ -36,7 +34,9 @@ public class AddAccountActivity extends BaseActivity{
     private AddAccountViewModel viewModel;
     private MutableLiveData<List<AccountClass>> classLiveData;
     private MutableLiveData<List<AccountTag>> tagLiveData;
-    private int classPosition = 0, tagPosition = -1;
+    private MutableLiveData<List<WalletItem>> walletLiveData;
+    private int classPosition = 0, tagPosition = -1, walletSize = 0;
+    private WalletItem walletItem;
     private String tagDescribe = "";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,20 +47,46 @@ public class AddAccountActivity extends BaseActivity{
 
         classLiveData = new MutableLiveData<>();
         tagLiveData = new MutableLiveData<>();
+        walletLiveData = new MutableLiveData<>();
         viewModel.loadClassData(classLiveData);
         binding.finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (classPosition != -1 && tagPosition != -1 && binding.money.getText().length() > 0) {
+                if (classPosition != -1 && tagPosition != -1 && binding.money.getText().length() > 0 && (walletSize == 0 ||
+                        (walletItem != null && ((walletItem.walletType == 1 && walletItem.getQuota() - walletItem.balance - Float.valueOf(binding.money.getText().toString())> 0)//信用卡
+                                || (walletItem.balance - Float.valueOf(binding.money.getText().toString())> 0))))) {
                     ViewUtils.hideSoftKeyboard(AddAccountActivity.this, binding.money);
                     viewModel.insertAccountItem(new AccountItem(System.currentTimeMillis(), Float.valueOf(binding.money.getText().toString()),
-                            classPosition, tagPosition, tagDescribe));
+                            classPosition, tagPosition, tagDescribe, walletItem.getId()));
                     AddAccountActivity.this.finish();
                 } else {
                     Toast.makeText(AddAccountActivity.this, getResources().getText(R.string.retry), Toast.LENGTH_LONG).show();
                 }
             }
         });
+        walletLiveData.observe(this, new Observer<List<WalletItem>>() {
+            @Override
+            public void onChanged(final List<WalletItem> walletItems) {
+                walletSize = walletItems.size();
+                TagAdapter<WalletItem> walletAdapter = new TagAdapter<WalletItem>(walletItems) {
+                    @Override
+                    public View getView(FlowLayout parent, int position, WalletItem walletItem) {
+                        LinearLayout linearLayout = (LinearLayout) getLayoutInflater().inflate(R.layout.layout_account_class, binding.walletLayout, false);
+                        TextView textView = linearLayout.findViewById(R.id.class_describe);
+                        textView.setText(walletItem.getWalletDescribe());
+                        return linearLayout;
+                    }
+
+                    @Override
+                    public void onSelected(int position, View view) {
+                        super.onSelected(position, view);
+                        walletItem = walletItems.get(position);
+                    }
+                };
+                binding.walletLayout.setAdapter(walletAdapter);
+            }
+        });
+        viewModel.loadWalletItem(walletLiveData);
         classLiveData.observe(this, new Observer<List<AccountClass>>() {
             @Override
             public void onChanged(final List<AccountClass> accountClasses) {

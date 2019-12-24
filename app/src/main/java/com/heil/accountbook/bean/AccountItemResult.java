@@ -7,9 +7,9 @@ public class AccountItemResult {
     int id;
     float account_money;
     long account_time;
-    String account_describe, class_describe, tag_describe, realTime;
+    String account_describe, class_describe, tag_describe, realTime, wallet_describe;
 
-    public AccountItemResult(int id, float account_money, long account_time, String account_describe, String class_describe, String tag_describe) {
+    public AccountItemResult(int id, float account_money, long account_time, String account_describe, String class_describe, String tag_describe, String wallet_describe) {
         this.id = id;
         this.account_money = account_money;
         this.account_time = account_time;
@@ -17,6 +17,7 @@ public class AccountItemResult {
         this.class_describe = class_describe;
         this.tag_describe = tag_describe;
         this.realTime = getRealTime(account_time);
+        this.wallet_describe = wallet_describe;
     }
 
     public int getId() {
@@ -75,5 +76,17 @@ public class AccountItemResult {
         Date date = new Date(time);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd HH:mm");
         return simpleDateFormat.format(date);
+    }
+
+    public void setRealTime(String realTime) {
+        this.realTime = realTime;
+    }
+
+    public String getWallet_describe() {
+        return wallet_describe;
+    }
+
+    public void setWallet_describe(String wallet_describe) {
+        this.wallet_describe = wallet_describe;
     }
 }

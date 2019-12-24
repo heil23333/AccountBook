@@ -35,6 +35,10 @@ public class Repository {
         return INSTANCE;
     }
 
+    public void getWalletItem(MutableLiveData<List<WalletItem>> wallets) {
+        new GetWalletItemForAddAccount(dao, wallets).execute();
+    }
+
     public void getAccountTag(MutableLiveData<List<AccountTag>> tagLiveData, int classId) {
         new GetAccountTagAsyncTask(dao, tagLiveData).execute(classId);
     }
@@ -65,6 +69,27 @@ public class Repository {
 
     public void getWalletItemData(GetWalletItemCallback callback) {
         new GetWalletItemData(dao, callback).execute();
+    }
+
+    public static class GetWalletItemForAddAccount extends AsyncTask<Void, Void, List<WalletItem>> {
+        AccountDAO dao;
+        MutableLiveData<List<WalletItem>> wallets;
+
+        public GetWalletItemForAddAccount(AccountDAO dao, MutableLiveData<List<WalletItem>> wallets) {
+            this.dao = dao;
+            this.wallets = wallets;
+        }
+
+        @Override
+        protected List<WalletItem> doInBackground(Void... voids) {
+            return dao.getWalletForAddAccount();
+        }
+
+        @Override
+        protected void onPostExecute(List<WalletItem> walletItems) {
+            super.onPostExecute(walletItems);
+            wallets.setValue(walletItems);
+        }
     }
 
     public static class GetWalletItemData extends AsyncTask<Void, Void, Void> {

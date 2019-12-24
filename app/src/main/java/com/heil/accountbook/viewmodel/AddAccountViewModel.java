@@ -10,6 +10,7 @@ import com.heil.accountbook.Repository;
 import com.heil.accountbook.bean.AccountClass;
 import com.heil.accountbook.bean.AccountItem;
 import com.heil.accountbook.bean.AccountTag;
+import com.heil.accountbook.bean.WalletItem;
 
 import java.util.List;
 
@@ -39,5 +40,9 @@ public class AddAccountViewModel extends AndroidViewModel{
 
     public void insertAccountItem(AccountItem... accountItems) {
         repository.insertAccountItem(accountItems);
+    }
+
+    public void loadWalletItem(MutableLiveData<List<WalletItem>> wallets) {
+        repository.getWalletItem(wallets);
     }
 }
