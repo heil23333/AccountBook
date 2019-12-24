@@ -3,11 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="result"
-            type="com.heil.accountbook.bean.AccountItemResult" />
-    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,7 +12,6 @@
             android:id="@+id/accountItemTag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{result.tag_describe}"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/accountItemClass"
             app:layout_constraintEnd_toEndOf="parent"
@@ -30,7 +24,6 @@
             android:id="@+id/accountItemClass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{result.class_describe}"
             tools:text="吃喝"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/accountItemTag"
@@ -43,7 +36,6 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginLeft="32dp"
-            android:text="@{String.valueOf(result.account_money)}"
             tools:text="10.05"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -56,7 +48,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView"
-            tools:text="@{result.realTime}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

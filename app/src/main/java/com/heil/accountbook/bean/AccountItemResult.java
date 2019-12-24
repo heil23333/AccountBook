@@ -1,7 +1,5 @@
 package com.heil.accountbook.bean;
 
-import androidx.room.Ignore;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -9,9 +7,7 @@ public class AccountItemResult {
     int id;
     float account_money;
     long account_time;
-    String account_describe, class_describe, tag_describe;
-    @Ignore
-    String realTime;
+    String account_describe, class_describe, tag_describe, realTime;
 
     public AccountItemResult(int id, float account_money, long account_time, String account_describe, String class_describe, String tag_describe) {
         this.id = id;
@@ -79,9 +75,5 @@ public class AccountItemResult {
         Date date = new Date(time);
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd HH:mm");
         return simpleDateFormat.format(date);
-    }
-
-    public void setRealTime(String realTime) {
-        this.realTime = realTime;
     }
 }

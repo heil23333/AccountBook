@@ -1,23 +1,21 @@
 package com.heil.accountbook.adapter;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.paging.PagedListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.heil.accountbook.R;
 import com.heil.accountbook.bean.AccountItemResult;
-import com.heil.accountbook.databinding.LayoutAccountItemBinding;
 
-public class MyPagedListAdapter extends PagedListAdapter<AccountItemResult, MyPagedListAdapter.AccountItemViewHolder> {
+public class MyAccountItemAdapter extends PagedListAdapter<AccountItemResult, MyAccountItemAdapter.AccountItemViewHolder> {
 
-    private int layoutId;
-
-    public MyPagedListAdapter(int layoutId) {
+    public MyAccountItemAdapter() {
         super(new DiffUtil.ItemCallback<AccountItemResult>() {
             @Override
             public boolean areItemsTheSame(@NonNull AccountItemResult oldItem, @NonNull AccountItemResult newItem) {
@@ -29,27 +27,30 @@ public class MyPagedListAdapter extends PagedListAdapter<AccountItemResult, MyPa
                 return oldItem.getAccount_time() == newItem.getAccount_time();
             }
         });
-        this.layoutId = layoutId;
     }
 
     @NonNull
     @Override
     public AccountItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutAccountItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), layoutId, parent, false);
-        return new AccountItemViewHolder(binding);
+        return new AccountItemViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_account_item, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull AccountItemViewHolder holder, int position) {
-        LayoutAccountItemBinding binding = (LayoutAccountItemBinding) holder.dataBinding;
-        binding.setResult(getItem(position));
+        holder.accountItemTag.setText(getItem(position).getTag_describe());
+        holder.accountItemClass.setText(getItem(position).getClass_describe());
+        holder.accountItemMoney.setText(String.valueOf(getItem(position).getAccount_money()));
+        holder.accountItemTime.setText(String.valueOf(getItem(position).getRealTime()));
     }
 
     static class AccountItemViewHolder extends RecyclerView.ViewHolder{
-        ViewDataBinding dataBinding;
-        public AccountItemViewHolder(ViewDataBinding dataBinding) {
-            super(dataBinding.getRoot());
-            this.dataBinding = dataBinding;
+        TextView accountItemTag, accountItemClass, accountItemMoney, accountItemTime;
+        public AccountItemViewHolder(View view) {
+            super(view);
+            accountItemTag = view.findViewById(R.id.accountItemTag);
+            accountItemClass = view.findViewById(R.id.accountItemClass);
+            accountItemMoney = view.findViewById(R.id.accountItemMoney);
+            accountItemTime = view.findViewById(R.id.accountItemTime);
         }
     }
 }
